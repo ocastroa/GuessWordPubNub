@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Guess the Word!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>   
+    <section id="main">
+        <canvas id="drawCanvas" width="1263" height="500" style="cursor: default;"></canvas>
+    
+        <section id="colorSwatch">
+            <input type="radio" name="color" id="color01" data-color="gold" checked><label for="color01"></label> 
+            <input type="radio" name="color" id="color02" data-color="darkorange">	<label for="color02"></label>  
+            <input type="radio" name="color" id="color03" data-color="navy">		<label for="color03"></label>  
+            <input type="radio" name="color" id="color04" data-color="yellowgreen">	<label for="color04"></label>  
+            <input type="radio" name="color" id="color05" data-color="firebrick">	<label for="color05"></label>  
+            <input type="radio" name="color" id="color06" data-color="powderblue">	<label for="color06"></label> 
+    </section>    
+
+    <div class="bubble">
+        <span id="occupancy">0</span>
+        <span id="unit">people</span>
+    </div>
+
+    <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.21.7.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="guessDrawing.js"></script>
+</body>
+</html>
+
+
