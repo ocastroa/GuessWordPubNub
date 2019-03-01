@@ -9,8 +9,33 @@
 </head>
 
 <body>   
-    <section id="main">
-        <canvas id="drawCanvas" width="1263" height="500" style="cursor: default;"></canvas>
+    <div class="main">
+        <canvas id="drawCanvas" width="1180" height="470" style="cursor: default;"></canvas>
+        <div class="chat-container">
+            <div class="content">
+                <div class="chat-log" id="chatLog"></div>
+                <div class="chat-input">
+                    <textarea
+                        id="chatInput"
+                        placeholder="Chat here..."
+                        maxlength="1000"
+                    ></textarea>
+                </div>
+            </div>
+        </div>        
+        
+        <div class="guess-word-chat-container">
+            <div class="guess-word-chat-content">
+                <div class="guess-word-chat-log" id="guess-word-chatLog"></div>
+                <div class="guess-word-chat-input">
+                    <textarea
+                        id="guess-word-chatInput"
+                        placeholder="Guess the drawing. Enter word here..."
+                        maxlength="1000"
+                    ></textarea>
+                </div>
+            </div>
+        </div> 
     
         <section id="colorSwatch">
             <input type="radio" name="color" id="color01" data-color="gold" checked><label for="color01"></label> 
@@ -19,14 +44,12 @@
             <input type="radio" name="color" id="color04" data-color="yellowgreen">	<label for="color04"></label>  
             <input type="radio" name="color" id="color05" data-color="firebrick">	<label for="color05"></label>  
             <input type="radio" name="color" id="color06" data-color="powderblue">	<label for="color06"></label> 
-    </section>    
+    </div>    
 
-    <div class="bubble">
-        <span id="occupancy">0</span>
-        <span id="unit">people</span>
-    </div>
+
 
     <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.21.7.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chat-engine@0.9.18/dist/chat-engine.min.js"></script> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="guessDrawing.js"></script>
 </body>

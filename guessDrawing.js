@@ -2,11 +2,22 @@
 	/* PubNub */
     let channel = 'guessWord';
     let newUUID = PubNub.generateUUID();
+
     let hostUUID = ''
-    let guestUUID = ''
     let player = 'Host'
-    //console.log(`Your uuid is: ${newUUID}`);
-    //console.log(`channel: ${channel}`);
+    let isHost = ''
+    let guestUUID = ''
+
+    let name = '';
+
+    function $(id) { 
+        console.log(document.getElementById(id));  
+        return document.getElementById(id); 
+    }   
+
+    let chatLog =  $('chatLog'), chatInput = $('chatInput');
+
+    // let guessWordChatLog =  $('guess-word-chatLog'), guessWordInput = $('guess-word-chatInput');
 
     let pubnubGuessgame = new PubNub({
         uuid: newUUID,
@@ -15,23 +26,36 @@
         ssl		: true
     });
 
+    let ChatEngine = ChatEngineCore.create({
+        publishKey: 'pub-c-e7a955d5-a869-4d78-b25a-d5f9d72aad6a',
+        subscribeKey: 'sub-c-be7320d0-3be8-11e9-82f9-d2a672cc1cb7'
+    }, {
+        globalChannel: 'guessWord'
+    });
+
+    ChatEngine.on('$.ready', function(data) {
+        // Every time a message is recieved from PubNub, render it.
+        ChatEngine.global.on('message', onMessage);
+    });
+
     pubnubGuessgame.addListener({
         message: function(msg) {
             if(msg){
                 console.log("inside message function");
-                console.log(msg.message);
-                drawFromStream(msg.message);                  
+                console.log(msg.message.guessWordInput);
+                // if(msg.message.guessWordInput){
+                //     guessWordChatLog.innerHTML = msg.message.guessWordInput + '</br>';
+                // }
+                // else{
+                drawFromStream(msg.message);     
+                // }               
             }    
         },
         presence: function(response) {
-            // if(response.occupancy > 1){
-            //     document.getElementById('unit').textContent = 'doodlers';
-            // }
-            // document.getElementById('occupancy').textContent = response.occupancy;
-
             if (response.action === "join") {
                 if(response.occupancy < 2){
                     hostUUID = response.uuid;
+                    isHost = true;
                     console.log("Waiting for opponent");
                     console.log(`You are the ${player}`);
                     console.log("num of ppl: " + response.occupancy);
@@ -45,11 +69,27 @@
                 }
                 else if(response.occupancy > 2){
                     console.log("Game already has two players. Please wait your turn");
+                    startGame();
                 }
 
                 if(response.occupancy === 2){
                     console.log("num of ppl: " + response.occupancy);
                     console.log("Starting game...");
+                    if(isHost){
+                        name = "Host";
+                    }
+                    else{
+                        name = "Guest";
+                    }
+                
+                    console.log(name);
+                
+                    var client = {
+                        uuid: name,
+                        name: name
+                    };
+                
+                    ChatEngine.connect(client.uuid, client);
                     startGame();
                 }
             }
@@ -96,7 +136,7 @@
     pubnubGuessgame.subscribe({
 		channels: [channel],
         withPresence: true
-	});
+    });
 
     let canvas = document.getElementById('drawCanvas');
     let ctx = canvas.getContext('2d');
@@ -118,7 +158,7 @@
 
     function startGame(){
         //only current player, host first, draws while guest guesses word
-        if(!hostUUID) return;
+        //if(!isHost) return;
 
         document.getElementById('colorSwatch').addEventListener('click', function() {
             color = document.querySelector(':checked').getAttribute('data-color');
@@ -191,4 +231,52 @@
 
         plots = [];
     }
+
+
+     //ChatEngine
+    function scrollBottom() {
+        chatLog.scrollTo(0, chatLog.scrollHeight);
+    }
+
+    function onMessage(message) {
+        console.log(message.data.text);
+        console.log(message.data.uuid);
+        var uuid = message.data.uuid;
+        var text = message.data.text;
+
+        // add the message to the chat UI
+        var domContent = `<div class="chat-message"><b>${uuid}:</b> ${text}</div>`;
+        chatLog.insertAdjacentHTML('beforeend', domContent);
+        scrollBottom();
+    }
+
+    function sendMessage(e) {
+       if (e.keyCode === 13  && !e.shiftKey) e.preventDefault();
+
+        let focussed = chatInput.matches(':focus');
+
+        if (focussed && e.keyCode === 13 && chatInput.value.length > 0) {
+            var text = chatInput.value;
+            ChatEngine.global.emit('message', {
+                text: text,
+                uuid: name
+            });
+
+            chatInput.value = '';
+        }
+    }
+
+    // Add event listener for the textarea of the chat UI
+    chatInput.addEventListener('keypress', sendMessage);
+
+    // guessWordInput.addEventListener('keyup', function(e){
+    //     if(e.keyCode === 13){
+    //         publish({
+    //             guessWordInput: guessWordInput.value,
+    //         })   
+                             
+    //     }
+    // });
+    
 })();
+

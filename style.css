@@ -1,11 +1,16 @@
-html, body {
-    height: 90%;
-    width: 90%;
-	margin: 10;
-	background: rgb(85, 121, 197);
+body {
+  height: 85%;
+  width: 75%;
+	margin: 1em;
+	margin-left: 0.9em;
+	background: rgb(186, 205, 245);
 }
 #wrapper {
     min-height: 90%;
+}
+
+.main{
+	display: inline-block;
 }
 
 header {
@@ -32,8 +37,8 @@ a {
 }
 
 #drawCanvas {
-  	-ms-touch-action: none;
-  	position: absolute;
+  -ms-touch-action: none;
+  position: relative;
 	top: 0;
 	left: 0;
 }
@@ -89,32 +94,7 @@ footer {
 header div {
 	float: left;
 }
-.bubble {
-	-webkit-transition: all .5s;
-	transition: all .5s;
-}
-/* .bubble {
-	position: absolute;
-	top: 80px;
-	right: 15px;
-  	min-width: 48px;
-  	height: 48px;
-  	padding: .3em;
-  	display: inline-block;
-  	border-radius: 8px;
-  	line-height: .9em;
-  	color: #fff;
-  	text-align: center;
-  	background: #0142a3;
-} */
-.bubble span {
-  	display: block;
-  	margin: 5px auto;
-  	font-size: 10px;
-}
-.bubble #occupancy {
-  	font-size: 32px;
-}
+
 
 
 @media all and (orientation: landscape) {
@@ -126,45 +106,121 @@ header div {
 		display: inline-block;
 		width: 50px;
 		top: 110px;
-		right: 28px;
+		right: 15px;
 	}
 	.alt2 #colorSwatch {
 		top: 30px;
 	}
-	.bubble {
-		top: 20px;
-		position: relative;
-	  	min-width: 55px;
-	  	height: 45px;
-	  	padding: .4em;
-	  	margin: 5px 10px 20px 30px;
-	  	display: inline-block;
-	  	border-radius: 8px;
-	  	line-height: 1.05em;
-	  	color: #fff;
-	  	text-align: center;
-	  	background: #0142a3;
-	}
-	.bubble:after {
-	  	content: "";
-	  	position: absolute;
-	  	bottom: -15px;
-	  	right: 28px;
-	  	border: 0;
-	  	border-left-width: 20px;
-	  	border-bottom-width: 15px;
-	  	border-style: solid;
-	  	border-color: transparent #0142a3;
-	  	display: block;
-	  	width: 0;
-	}
-	.bubble span {
-	  	display: block;
-	  	margin: 5px auto;
-	  	font-size: 12px;
-	}
-	.bubble #occupancy {
-  		font-size: 40px;
-	  	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-	}
-}	
+
+}
+
+.chat-container {
+	display: block;
+	width: 64%;
+	height: inherit;
+	float: right;
+	margin-right: 0.6em;
+	overflow: auto;
+	border: 1px solid white;
+	background-color:  rgba(236, 236, 236, 0.884);
+	text-align: left;
+	font-family: Helvetica;
+}
+.chat-container .content {
+	display: table;
+	width: 100%;
+	height: 100%;
+
+}
+.chat-message {
+	max-width: 900px;
+	margin: 10px auto;
+}
+.chat-log {
+	display: block;
+	height: 120px;
+	width: 98%;
+	padding: 0px 10px;
+	margin: 10px auto 0px auto;
+	box-sizing: border-box;
+	overflow-y: scroll;
+}
+.chat-log::-webkit-scrollbar {
+	display: none;
+}
+.chat-input {
+	display: table-row;
+	width: 100%;
+	height: 26px;
+}
+.chat-input textarea {
+	display: block;
+	width: 96%;
+	height: 38px;
+	padding: 5px;
+	margin: 10px auto;
+	box-sizing: border-box;
+	line-height: 20pt;
+	resize: none;
+	outline: none;
+	font-size: 14px;
+	border: solid 1px #888888;
+	border-radius: 3px;
+}
+
+
+
+
+.guess-word-chat-container {
+	display: block;
+	width: 33%;
+	height: inherit;
+	float: left;
+	margin-left: 1.2em; 
+	overflow: auto;
+	border: 1px solid white;
+	background-color:  rgba(236, 236, 236, 0.884);
+	text-align: left;
+	font-family: Helvetica;
+}
+.guess-word-chat-container .guess-word-chat-content {
+	display: table;
+	width: 100%;
+	height: 100%;
+
+}
+.guess-word-chat-message {
+	max-width: 900px;
+	margin: 10px auto;
+}
+.guess-word-chat-log{
+	display: block;
+	height: 120px;
+	width: 98%;
+	padding: 0px 10px;
+	margin: 10px auto 0px auto;
+	box-sizing: border-box;
+	overflow-y: scroll;
+}
+.guess-word-chat-log::-webkit-scrollbar {
+	display: none;
+}
+.guess-word-chat-input {
+	display: table-row;
+	width: 100%;
+	height: 26px;
+}
+.guess-word-chat-input textarea {
+	display: block;
+	width: 96%;
+	height: 38px;
+	padding: 5px;
+	margin: 10px auto;
+	box-sizing: border-box;
+	line-height: 20pt;
+	resize: none;
+	outline: none;
+	font-size: 14px;
+	border: solid 1px #888888;
+	border-radius: 3px;
+}
