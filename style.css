@@ -105,7 +105,7 @@ header div {
 	#colorSwatch {
 		display: inline-block;
 		width: 50px;
-		top: 110px;
+		top: 100px;
 		right: 15px;
 	}
 	.alt2 #colorSwatch {
@@ -167,9 +167,6 @@ header div {
 	border: solid 1px #888888;
 	border-radius: 3px;
 }
-
-
-
 
 .guess-word-chat-container {
 	display: block;

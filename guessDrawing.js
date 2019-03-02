@@ -1,4 +1,12 @@
 (function() {
+
+    let words = ['alligator', 'bear', 'cat', 'chinchilla', 'cow', 'coyote', 'crocodile', 'dolphin', 'duck', 'fish', 'fox', 'gecko', 'hamster', 'hippopotamus', 'jaguar', 'leopard', 'liger', 'lion', 'lynx', 'monkey', 'ocelot', 'octopus', 'panther', 'penguin', 'pig', 'rhinoceros', 'seal', 'skunk', 'sloth', 'starfish', 'stingray', 'tiger', 'tortoise', 'toucan', 'turtle', 'whale', 'wolf'];
+
+    let choosenWord = '';
+    let chooseIndex = -1;
+
+    let rounds = 3;
+
 	/* PubNub */
     let channel = 'guessWord';
     let newUUID = PubNub.generateUUID();
@@ -17,7 +25,7 @@
 
     let chatLog =  $('chatLog'), chatInput = $('chatInput');
 
-    // let guessWordChatLog =  $('guess-word-chatLog'), guessWordInput = $('guess-word-chatInput');
+    let guessWordChatLog =  $('guessWordChatLog'), guessWordInput = $('guessWordChatInput');
 
     let pubnubGuessgame = new PubNub({
         uuid: newUUID,
@@ -26,6 +34,7 @@
         ssl		: true
     });
 
+    //Main Chat
     let ChatEngine = ChatEngineCore.create({
         publishKey: 'pub-c-e7a955d5-a869-4d78-b25a-d5f9d72aad6a',
         subscribeKey: 'sub-c-be7320d0-3be8-11e9-82f9-d2a672cc1cb7'
@@ -38,17 +47,30 @@
         ChatEngine.global.on('message', onMessage);
     });
 
+    //Guess Word Chat
+    let GuessWordChatEngine = ChatEngineCore.create({
+        publishKey: 'pub-c-72fbd257-fe52-43c3-a861-435c484e9f9e',
+        subscribeKey: 'sub-c-f1cdfc38-3bf8-11e9-b86f-06e8d5f9a4fd'
+    }, {
+        globalChannel: 'guessWord'
+    });
+
+    GuessWordChatEngine.on('$.ready', function(data) {
+        // Every time a message is recieved from PubNub, render it.
+        GuessWordChatEngine.global.on('message', onMessageGuessWord);
+    });
+
     pubnubGuessgame.addListener({
         message: function(msg) {
             if(msg){
                 console.log("inside message function");
                 console.log(msg.message.guessWordInput);
-                // if(msg.message.guessWordInput){
-                //     guessWordChatLog.innerHTML = msg.message.guessWordInput + '</br>';
-                // }
-                // else{
-                drawFromStream(msg.message);     
-                // }               
+
+                //only draw on guest's canvas
+                if(!isHost){
+                    drawFromStream(msg.message);         
+                }
+
             }    
         },
         presence: function(response) {
@@ -69,7 +91,7 @@
                 }
                 else if(response.occupancy > 2){
                     console.log("Game already has two players. Please wait your turn");
-                    startGame();
+                    //startGame();
                 }
 
                 if(response.occupancy === 2){
@@ -90,6 +112,8 @@
                     };
                 
                     ChatEngine.connect(client.uuid, client);
+                    GuessWordChatEngine.connect(client.uuid, client); 
+
                     startGame();
                 }
             }
@@ -157,8 +181,16 @@
     let isTouchSupported = 'ontouchstart' in window;
 
     function startGame(){
+        chooseIndex++;
+        choosenWord = words[chooseIndex];
+        //words.splice(chooseIndex,1);
+
         //only current player, host first, draws while guest guesses word
-        //if(!isHost) return;
+        if(!isHost) return;
+
+        if(isHost){
+            console.log(`Word choosen is ${choosenWord}`);
+        }
 
         document.getElementById('colorSwatch').addEventListener('click', function() {
             color = document.querySelector(':checked').getAttribute('data-color');
@@ -174,6 +206,18 @@
         canvas.addEventListener(downEvent, startDraw, false);
         canvas.addEventListener(moveEvent, draw, false);
         canvas.addEventListener(upEvent, endDraw, false);    
+    }
+
+    function nextLevel(){
+        console.log("clearing canvas...");
+        ctx.fillStyle = "WHITE";
+        ctx.fillRect(20,20,window.innerWidth, window.innerHeight);
+        rounds--;
+        console.log(`Round is: ${rounds}`);
+        if(rounds === 0){
+            console.log("Game over!");
+        }
+        startGame();
     }
 
     function publish(data) {
@@ -233,7 +277,7 @@
     }
 
 
-     //ChatEngine
+     //ChatEngine for main chat
     function scrollBottom() {
         chatLog.scrollTo(0, chatLog.scrollHeight);
     }
@@ -269,14 +313,96 @@
     // Add event listener for the textarea of the chat UI
     chatInput.addEventListener('keypress', sendMessage);
 
-    // guessWordInput.addEventListener('keyup', function(e){
-    //     if(e.keyCode === 13){
-    //         publish({
-    //             guessWordInput: guessWordInput.value,
-    //         })   
-                             
-    //     }
-    // });
-    
+        //ChatEngine for main chat
+    function scrollBottom() {
+        chatLog.scrollTo(0, chatLog.scrollHeight);
+    }
+
+    function onMessage(message) {
+        console.log(message.data.text);
+        console.log(message.data.uuid);
+        var uuid = message.data.uuid;
+        var text = message.data.text;
+
+        // add the message to the chat UI
+        var domContent = `<div class="chat-message"><b>${uuid}:</b> ${text}</div>`;
+        chatLog.insertAdjacentHTML('beforeend', domContent);
+        scrollBottom();
+    }
+
+    function sendMessage(e) {
+        if (e.keyCode === 13  && !e.shiftKey) e.preventDefault();
+
+        let focused = chatInput.matches(':focus');
+
+        if (focused && e.keyCode === 13 && chatInput.value.length > 0) {
+            var text = chatInput.value;
+            ChatEngine.global.emit('message', {
+                text: text,
+                uuid: name
+            });
+
+            chatInput.value = '';
+        }
+    }
+
+    // Add event listener for the textarea of the chat UI
+    chatInput.addEventListener('keypress', sendMessage);
+
+
+
+    //ChatEngine for guess word chat
+    function scrollBottomGuessWord() {
+        guessWordChatLog.scrollTo(0, guessWordChatLog.scrollHeight);
+    }
+
+    function onMessageGuessWord(message) {
+        console.log(message.data.text);
+        var uuid = message.data.uuid;
+        var text = message.data.text;
+
+        // add the message to the chat UI
+        var domContent = `<div class="chat-message"><b>${uuid}:</b> ${text}</div>`;
+        guessWordChatLog.insertAdjacentHTML('beforeend', domContent);
+        scrollBottomGuessWord();
+
+        if(isHost){
+            if(text === choosenWord){
+                console.log("Word was guessed!");
+                nextLevel();
+            }                    
+        }
+    }
+
+    function sendMessageGuessWord(e) {
+        if (e.keyCode === 13  && !e.shiftKey) e.preventDefault();
+
+        let focused = guessWordInput.matches(':focus');
+
+        if (focused && e.keyCode === 13 && guessWordInput.value.length > 0) {
+            if(isHost){
+                window.alert("It's your turn to draw. Only other player can guess the word.");
+                return;
+            }
+            var text = guessWordInput.value;
+            if(!isHost){
+                if(text === choosenWord){
+                    console.log("You guessed right!");
+                    nextLevel();
+                }                 
+            }
+              
+            GuessWordChatEngine.global.emit('message', {
+                text: text,
+                uuid: name
+            });
+
+            guessWordInput.value = '';
+        }
+    }
+
+    // Add event listener for the textarea of the chat UI
+    guessWordInput.addEventListener('keypress', sendMessageGuessWord);
+
 })();
 
