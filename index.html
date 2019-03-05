@@ -8,8 +8,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>   
+<body>       
     <div class="main">
+        <p class="player-score" id="score"></p>
+        <p class="other-player-score" id="otherScore"></p>
+
+        <p class="guess-word" id="guessWord"></p>
+        <p class="tries-left" id="triesLeft"></p>
+
         <canvas id="drawCanvas" width="1180" height="470" style="cursor: default;"></canvas>
         <div class="chat-container">
             <div class="content">
@@ -35,7 +41,7 @@
                     ></textarea>
                 </div>
             </div>
-        </div> 
+        </div>
     
         <section id="colorSwatch">
             <input type="radio" name="color" id="color01" data-color="gold" checked><label for="color01"></label> 
@@ -43,7 +49,9 @@
             <input type="radio" name="color" id="color03" data-color="navy">		<label for="color03"></label>  
             <input type="radio" name="color" id="color04" data-color="yellowgreen">	<label for="color04"></label>  
             <input type="radio" name="color" id="color05" data-color="firebrick">	<label for="color05"></label>  
-            <input type="radio" name="color" id="color06" data-color="powderblue">	<label for="color06"></label> 
+            <input type="radio" name="color" id="color06" data-color="black">	    <label for="color06"></label> 
+            <button class="button" id="clearCanvasButton">Clear</button>
+        </section>
     </div>    
 
 
