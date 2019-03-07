@@ -11,8 +11,7 @@
 <body>       
     <div class="main">
         <p class="player-score" id="score"></p>
-        <p class="other-player-score" id="otherScore"></p>
-
+        <p class="opponents-score" id="opponentScore"></p>
         <p class="guess-word" id="guessWord"></p>
         <p class="tries-left" id="triesLeft"></p>
 
@@ -50,17 +49,12 @@
             <input type="radio" name="color" id="color04" data-color="yellowgreen">	<label for="color04"></label>  
             <input type="radio" name="color" id="color05" data-color="firebrick">	<label for="color05"></label>  
             <input type="radio" name="color" id="color06" data-color="black">	    <label for="color06"></label> 
-            <button class="button" id="clearCanvasButton">Clear</button>
+            <button class="clear-button" id="clearCanvasButton">Clear</button>
         </section>
     </div>    
 
-
-
     <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.21.7.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chat-engine@0.9.18/dist/chat-engine.min.js"></script> 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="guessDrawing.js"></script>
 </body>
 </html>
-
-

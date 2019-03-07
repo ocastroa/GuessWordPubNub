@@ -1,43 +1,36 @@
 (function() {
-
-    let words = ['alligator', 'bear', 'cat', 'chinchilla', 'cow', 'coyote', 'crocodile', 'dolphin', 'duck', 'fish', 'fox', 'gecko', 'hamster', 'hippopotamus', 'jaguar', 'leopard', 'liger', 'lion', 'lynx', 'monkey', 'ocelot', 'octopus', 'panther', 'penguin', 'pig', 'rhinoceros', 'seal', 'skunk', 'sloth', 'starfish', 'stingray', 'tiger', 'tortoise', 'toucan', 'turtle', 'whale', 'wolf'];
+    const words = ['bear', 'cat', 'dog', 'car', 'house', 'pickle', 'glasses', 'tiger', 'panda', 'glue', 'bunny', 'skull', 'flower', 'bee', 'elmo', 'kermit', 'goldfish', 'heart', 'lion', 'butterfly', 'pumpkin', 'snowman', 'guitar', 'owl', 'batman', 'dragon', 'pigeon', 'starfish', 'cupcake'];
     
+    //Host gets sign of 'H' and Guest gets sign of 'G'
+    const mySign = { 
+        sign: '',
+        score: 0
+    }   
+
     let choosenWord = '';
-    let mySign = {
-        sign: 'H',
-        score: 0,
-    }
     let totalScore = 0;
-    let turn =  "H";
-    let tries = 3;
-
-	/* PubNub */
-    let channel = 'guessWord';
-    let newUUID = PubNub.generateUUID();
-
-    let hostUUID = ''
-    let player = 'Host'
-    let isHost = false;
-    let guestUUID = ''
-
-    let name = '';
+    let turn =  'H';
+    let tries = 3; // Each player gets 3 tries to guess the word
+    let player = ''; // Player is either 'Host' or 'Guest'
+    let winner = '';
+    let numOfPlayers = 0;
 
     function $(id) { 
-        console.log(document.getElementById(id));  
         return document.getElementById(id); 
     }   
 
-    let chatLog =  $('chatLog'), chatInput = $('chatInput');
+    let chatLog =  $('chatLog'), chatInput = $('chatInput'), guessWordChatLog =  $('guessWordChatLog'), guessWordInput = $('guessWordChatInput'), clearCanvasButton = $('clearCanvasButton'), score = $('score'),        colorSwatch = $('colorSwatch'), triesLeft = $('triesLeft'), guessWord = $('guessWord'),                opponentScore = $('opponentScore');
 
-    let guessWordChatLog =  $('guessWordChatLog'), guessWordInput = $('guessWordChatInput'),
-    clearCanvasButton = $('clearCanvasButton'), colorSwatch = $('colorSwatch'), triesLeft = $('triesLeft'),
-    guessWord = $('guessWord'), score = $('score'), otherScore = $('otherScore');
+	// PubNub
+    let channel = 'guessWord';
+    let newUUID = PubNub.generateUUID();
+    let isHost = false;
 
-    let pubnubGuessgame = new PubNub({
+    let pubnubGuessGame = new PubNub({
         uuid: newUUID,
-        publish_key     : 'pub-c-0eaf7fdd-cf5d-42f6-bee8-de40fe3b83a8',
-        subscribe_key   : 'sub-c-3084ee5c-3a30-11e9-82f9-d2a672cc1cb7',
-        ssl		: true
+        publish_key: 'pub-c-0eaf7fdd-cf5d-42f6-bee8-de40fe3b83a8',
+        subscribe_key: 'sub-c-3084ee5c-3a30-11e9-82f9-d2a672cc1cb7',
+        ssl: true
     });
 
     //Main Chat
@@ -45,7 +38,7 @@
         publishKey: 'pub-c-e7a955d5-a869-4d78-b25a-d5f9d72aad6a',
         subscribeKey: 'sub-c-be7320d0-3be8-11e9-82f9-d2a672cc1cb7'
     }, {
-        globalChannel: 'guessWord'
+        globalChannel: [channel]
     });
 
     ChatEngine.on('$.ready', function(data) {
@@ -58,20 +51,17 @@
         publishKey: 'pub-c-72fbd257-fe52-43c3-a861-435c484e9f9e',
         subscribeKey: 'sub-c-f1cdfc38-3bf8-11e9-b86f-06e8d5f9a4fd'
     }, {
-        globalChannel: 'guessWord'
+        globalChannel: [channel]
     });
 
     GuessWordChatEngine.on('$.ready', function(data) {
-        // Every time a message is recieved from PubNub, render it.
         GuessWordChatEngine.global.on('message', onMessageGuessWord);
     });
 
-    pubnubGuessgame.addListener({
+    listener = {
         message: function(msg) {
             if(msg){
-                console.log("inside message function");
-                console.log(msg.message);
-
+                // only show word to player whose turn it is to draw
                 if(turn !== mySign.sign && msg.message.choosenWord){
                     choosenWord = msg.message.choosenWord;
                 }
@@ -87,182 +77,166 @@
             }    
         },
         presence: function(response) {
-            if (response.action === "join") {
+            if (response.action === 'join') {
+                console.log("join");
+                numOfPlayers++;
+                console.log(numOfPlayers);
                 if(response.occupancy < 2){
-                    // triesLeft.innerHTML = "";
-                    // guessWord.innerHTML = "";
-                    hostUUID = response.uuid;
+                    console.log(response.occupancy);
+                    player = 'Host';
+                    mySign.sign = 'H';
                     isHost = true;
-
-                    console.log("Waiting for opponent");
-                    console.log(`You are the ${player}`);
-                    console.log("num of ppl: " + response.occupancy);
-                    console.log(`Your uuid: ${hostUUID}`);
-                    console.log(`My sign is: ${mySign.sign}`);
+                    guessWord.innerHTML = 'You are the Host. Waiting for opponent...';
                 }
+
                 else if(response.occupancy === 2){
+                    console.log(response.occupancy);
+                    numOfPlayers++;
+                    console.log(numOfPlayers);
                     if(!isHost){
-                        player = "Guest";
-                        guestUUID = response.uuid;
+                        player = 'Guest';
                         mySign.sign = 'G'; 
                     }
 
-                    console.log(`You are the ${player}`);
-                    console.log(`Your uuid: ${guestUUID}`);
-                    console.log(`My sign is: ${mySign.sign}`);
-                }
-                else if(response.occupancy > 2){
-                    console.log("Game already has two players. Please wait your turn");
-                    //startGame();
-                }
-
-                if(response.occupancy === 2){
-                    console.log("num of ppl: " + response.occupancy);
-                    console.log("Starting game...");
-                    if(isHost){
-                        name = "Host";
-                    }
-                    else{
-                        name = "Guest";
-                    }
-                                
-                    var client = {
-                        uuid: name,
-                        name: name
+                    let client = {
+                        uuid: player,
+                        player: player
                     };
                 
                     ChatEngine.connect(client.uuid, client);
                     GuessWordChatEngine.connect(client.uuid, client); 
 
-                    if(turn !== mySign.sign) {
-                        console.log("Not your turn to draw");
-                        score.innerHTML = `My Score: ${mySign.score}`;
-                        otherScore.innerHTML = "Opponent's Score: 0";
+                    score.innerHTML = `My Score: ${mySign.score}`;
+                    opponentScore.innerHTML = `Opponent's Score: ${totalScore}`;
+
+                    // Host draws first
+                    if(turn !== mySign.sign) {                   
                         guessWord.innerHTML = `Guess the drawing!`;
                         triesLeft.innerHTML = `Tries Left: ${tries}`;  
-                        return;
                     }
-
                     else{
-                        otherScore.innerHTML = "Opponent's Score: 0";
-                        startGame();
-                    }
+                      startGame();  
+                    }                    
+                }
+
+                // else if(response.occupancy > 2){ 
+                //     console.log(response.occupancy);
+                //     alert('Game already in progress');
+                // }
+            }
+
+            if(response.action === 'leave') {
+                console.log("leaving");
+                unsubscribeFromGame();
+            }
+        }, 
+        status: function(event) {
+            if (event.category == 'PNConnectedCategory') {
+                if(numOfPlayers === 2){
+                    alert('Game already in progress');
+                }
+                else{
+                    console.log("set up canvas");
+                    setUpCanvas();                    
                 }
             }
-         
-            // if(response.action === "leave") {
-            //     console.log(`${player} has left game!`);
-            //     onbeforeunload = function() {
-            //         globalUnsubscribe();
-            //         $.ajax({
-            //         // Query to server to unsub sync
-            //         async:false,
-            //         method: "GET",
-            //         url: "https://pubsub.pubnub.com/v2/presence/sub-key/sub-c-3084ee5c-3a30-11e9-82f9-d2a672cc1cb7/channel/guessWord/leave?uuid=" + encodeURIComponent(newUUID) 
-            //         }).done(function(jqXHR, textStatus) {
-            //         console.log( "Request done: " + textStatus );
-            //         }).fail(function( jqXHR, textStatus ) {
-            //         console.log( "Request failed: " + textStatus );
-            //         });
-            //         return null;
-            // }
-            // // Unsubscribe people from PubNub network
-            // globalUnsubscribe = function () {
-            //     try {
-            //     pubnub.unsubscribe({
-            //         channels: ['guessWord']
-            //     });
-            //     pubnub.removeListener(listener);
-            //     console.log("removed listener");
-            //     } catch (err) {
-            //     console.log("Failed to UnSub");
-            //     }
-            // };
-            // //declare other player winner and restart game and wait for another player
-            // }
-        },
-        // status events callback - handles network connectivity status events for all subscribed channels
-        status: function(event) {
-            if (event.category == "PNConnectedCategory") {
-                setUpCanvas();
-            }
-        }                 
-    });
+        }   
+    }
 
-    pubnubGuessgame.subscribe({
+    pubnubGuessGame.addListener(listener);
+
+    pubnubGuessGame.subscribe({
 		channels: [channel],
         withPresence: true
     });
 
     function publish(data) {
-		pubnubGuessgame.publish({
+		pubnubGuessGame.publish({
 			channel: channel,
 			message: data
 		});
      }
 
-    let canvas = document.getElementById('drawCanvas');
+    function unsubscribeFromGame(){
+        // Player left before game ended
+        if(winner === ''){
+            guessWord.innerHTML = 'Player left the game!';
+        }
+
+        pubnubGuessGame.removeListener(listener);
+        pubnubGuessGame.unsubscribe({
+            channels: [channel]
+        });
+
+        ChatEngine.disconnect();
+        GuessWordChatEngine.disconnect();
+     }
+
+    let canvas = $('drawCanvas');
     let ctx = canvas.getContext('2d');
     let color = document.querySelector(':checked').getAttribute('data-color');
 
-    /* Set up canvas */
-    function setUpCanvas(){
-        ctx.fillStyle = "WHITE";
-        ctx.fillRect(20,20,window.innerWidth, window.innerHeight);
-                
-        ctx.strokeStyle = color;
-        ctx.lineWidth = '3';
-        ctx.lineCap = ctx.lineJoin = 'round';        
-    }
-    
     let isActive = false;
     let plots = [];
     let clearTheCanvas = false;
     let isTouchSupported = 'ontouchstart' in window;
 
-    var isPointerSupported = navigator.pointerEnabled;
-    var isMSPointerSupported =  navigator.msPointerEnabled;
+    let isPointerSupported = navigator.pointerEnabled;
+    let isMSPointerSupported =  navigator.msPointerEnabled;
     
-    var downEvent = isTouchSupported ? 'touchstart' : (isPointerSupported ? 'pointerdown' : (isMSPointerSupported ? 'MSPointerDown' : 'mousedown'));
-    var moveEvent = isTouchSupported ? 'touchmove' : (isPointerSupported ? 'pointermove' : (isMSPointerSupported ? 'MSPointerMove' : 'mousemove'));
-    var upEvent = isTouchSupported ? 'touchend' : (isPointerSupported ? 'pointerup' : (isMSPointerSupported ? 'MSPointerUp' : 'mouseup'));
+    let downEvent = isTouchSupported ? 'touchstart' : (isPointerSupported ? 'pointerdown' : (isMSPointerSupported ? 'MSPointerDown' : 'mousedown'));
+    let moveEvent = isTouchSupported ? 'touchmove' : (isPointerSupported ? 'pointermove' : (isMSPointerSupported ? 'MSPointerMove' : 'mousemove'));
+    let upEvent = isTouchSupported ? 'touchend' : (isPointerSupported ? 'pointerup' : (isMSPointerSupported ? 'MSPointerUp' : 'mouseup'));
 
+    function setUpCanvas(){
+        ctx.fillStyle = 'WHITE';
+        ctx.fillRect(20,20,window.innerWidth, window.innerHeight);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = '3';
+        ctx.lineCap = ctx.lineJoin = 'round';        
+    }
+    
     function clearCanvas(){
-        console.log("clearing canvas...");
-        ctx.fillStyle = "WHITE";
+        ctx.fillStyle = 'WHITE';
+        ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
         ctx.fillRect(20,20,window.innerWidth, window.innerHeight);     
     }
 
     function nextRound(){
+        if(totalScore === 2 || mySign.score === 2){
+            winner = (turn === 'H') ? ('Host won!') : ('Guest won!');
+            guessWord.innerHTML = winner;
+            unsubscribeFromGame();
+            return;
+        }
+
         clearCanvas();
-        guessWordChatLog.innerHTML = "";
-        console.log("switching turns!");
-        console.log(`My sign is: ${mySign.sign}`);
+        guessWordChatLog.innerHTML = '';
         tries = 3;
 
+        // Other player's turn to draw a word
         if(turn !== mySign.sign) {
-            console.log("Not your turn to draw");
             guessWord.innerHTML = `Guess the drawing!`;
             triesLeft.innerHTML = `Tries Left: ${tries}`;
             canvas.removeEventListener(downEvent, startDraw, false);
             canvas.removeEventListener(moveEvent, draw, false);
             canvas.removeEventListener(upEvent, endDraw, false);    
             clearCanvasButton.removeEventListener('click', clearButton, false);
-            console.log("removed event listeners");
-            return;
         }
 
-        guessWord.innerHTML = "";
-        triesLeft.innerHTML = "";
-        startGame();
+        else{
+            // Player drawing does not guess word
+            guessWord.innerHTML = '';
+            triesLeft.innerHTML = '';
+            startGame();            
+        }
     }
 
     function startGame(){
+        // Choose a random word from array, then remove that word
         let chooseIndex = Math.floor(Math.random() * words.length);
         choosenWord = words[chooseIndex];
         words.splice(chooseIndex,1);
-        console.log(`Choosen word is: ${choosenWord}`);
-        score.innerHTML = `My Score: ${mySign.score}`;
         guessWord.innerHTML = `Draw the word: ${choosenWord}`;
 
         publish({
@@ -280,10 +254,9 @@
         canvas.addEventListener(upEvent, endDraw, false);    
     }
 
-    /* Draw on canvas */
+   // Draw on other player's canvas
     function drawFromStream(m) {
         if(!m || m.plots.length < 1) return;
-        console.log("inside drawFromStream");
 		drawOnCanvas(m.color, m.plots);
     }
 
@@ -292,36 +265,35 @@
 		ctx.beginPath();
 		ctx.moveTo(plots[0].x, plots[0].y);
 
-    	for(var i=1; i<plots.length; i++) {
+    	for(let i=1; i<plots.length; i++) {
 	    	ctx.lineTo(plots[i].x, plots[i].y);
 	    }
 	    ctx.stroke();
     }
 
 	function draw(e) {
-		e.preventDefault(); // prevent continuous touch event process e.g. scrolling!
+        // prevent continuous touch event process e.g. scrolling!
+		e.preventDefault(); 
 	  	if(!isActive) return;
 
-    	var x = isTouchSupported ? (e.targetTouches[0].pageX - canvas.offsetLeft) : (e.offsetX || e.layerX - canvas.offsetLeft);
-    	var y = isTouchSupported ? (e.targetTouches[0].pageY - canvas.offsetTop) : (e.offsetY || e.layerY - canvas.offsetTop);
+    	let x = isTouchSupported ? (e.targetTouches[0].pageX - canvas.offsetLeft) : (e.offsetX || e.layerX - canvas.offsetLeft);
+    	let y = isTouchSupported ? (e.targetTouches[0].pageY - canvas.offsetTop) : (e.offsetY || e.layerY - canvas.offsetTop);
 
-    	plots.push({x: (x << 0), y: (y << 0)}); // round numbers for touch screens
+        // round numbers for touch screens
+    	plots.push({x: (x << 0), y: (y << 0)}); 
 
     	drawOnCanvas(color, plots);
 	}
 	
 	function startDraw(e) {
-          e.preventDefault();
-
-	  	 isActive = true;
+        e.preventDefault();
+	  	isActive = true;
 	}
 	
 	function endDraw(e) {
 	  	e.preventDefault();
-	  	isActive = false;
-
-        console.log(`Plots: ${plots}`);  
-
+        isActive = false;
+          
         publish({
             color: color,
             plots: plots,
@@ -340,69 +312,25 @@
     }
 
 
-     //ChatEngine for main chat
-    function scrollBottom() {
-        chatLog.scrollTo(0, chatLog.scrollHeight);
-    }
-
+    //ChatEngine for the main chat
     function onMessage(message) {
-        console.log(message.data.text);
-        console.log(message.data.uuid);
-        var uuid = message.data.uuid;
-        var text = message.data.text;
-
         // add the message to the chat UI
-        var domContent = `<div class="chat-message"><b>${uuid}:</b> ${text}</div>`;
+        let uuid = message.data.uuid;
+        let text = message.data.text;
+        let domContent = `<div class='chat-message'><b>${uuid}:</b> ${text}</div>`;
         chatLog.insertAdjacentHTML('beforeend', domContent);
-        scrollBottom();
-    }
-
-    function sendMessage(e) {
-       if (e.keyCode === 13  && !e.shiftKey) e.preventDefault();
-
-        let focussed = chatInput.matches(':focus');
-
-        if (focussed && e.keyCode === 13 && chatInput.value.length > 0) {
-            var text = chatInput.value;
-            ChatEngine.global.emit('message', {
-                text: text,
-                uuid: name
-            });
-
-            chatInput.value = '';
-        }
-    }
-
-    // Add event listener for the textarea of the chat UI
-    chatInput.addEventListener('keypress', sendMessage);
-
-    //ChatEngine for main chat
-    function scrollBottom() {
         chatLog.scrollTo(0, chatLog.scrollHeight);
-    }
-
-    function onMessage(message) {
-        console.log(message.data.text);
-        console.log(message.data.uuid);
-        var uuid = message.data.uuid;
-        var text = message.data.text;
-
-        // add the message to the chat UI
-        var domContent = `<div class="chat-message"><b>${uuid}:</b> ${text}</div>`;
-        chatLog.insertAdjacentHTML('beforeend', domContent);
-        scrollBottom();
     }
 
     function sendMessage(e) {
         if (e.keyCode === 13  && !e.shiftKey) e.preventDefault();
 
-        let focused = chatInput.matches(':focus');
-
-        if (focused && e.keyCode === 13 && chatInput.value.length > 0) {
-            var text = chatInput.value;
+        let focussed = chatInput.matches(':focus');
+        if (focussed && e.keyCode === 13 && chatInput.value.length > 0) {
+            let text = chatInput.value;
             ChatEngine.global.emit('message', {
                 text: text,
-                uuid: name
+                uuid: player
             });
 
             chatInput.value = '';
@@ -413,46 +341,43 @@
     chatInput.addEventListener('keypress', sendMessage);
 
 
-    //ChatEngine for guess word chat
-    function scrollBottomGuessWord() {
-        console.log("scrolling");
-        guessWordChatLog.scrollTo(0, guessWordChatLog.scrollHeight);
+    function switchTurns(){
+        turn = (turn === 'H') ? 'G' : 'H';
+        nextRound();
     }
 
+    //ChatEngine for the guess word chat
     function onMessageGuessWord(message) {
-        console.log(message.data.text);
-        var uuid = message.data.uuid;
-        var text = message.data.text;
-
-        // add the message to the chat UI
-        var domContent = `<div class="chat-message"><b>${uuid}:</b> ${text}</div>`;
+        let uuid = message.data.uuid;
+        let text = message.data.text;
+        let domContent = `<div class='chat-message'><b>${uuid}:</b> ${text}</div>`;
         guessWordChatLog.insertAdjacentHTML('beforeend', domContent);
-        scrollBottomGuessWord();
+        guessWordChatLog.scrollTo(0, guessWordChatLog.scrollHeight);
 
+        // Check if word was guessed
         if(tries > 0 && text === choosenWord){
-            console.log("Word was guessed!");
+            // Give a point to player that guessed the word
             if(turn !== mySign.sign){
                 mySign.score += 1;
                 score.innerHTML = `My Score: ${mySign.score}`;    
             }
-            if(turn === mySign.sign){
+            // Increment score of opponent
+            else if(turn === mySign.sign){
                 totalScore++;
-                console.log(`Opp. score: ${totalScore}`);
-                otherScore.innerHTML = `Opponent's Score: ${totalScore}`;      
+                opponentScore.innerHTML = `Opponent's Score: ${totalScore}`;      
             }
-            turn = (turn === 'H') ? 'G' : 'H';
-            nextRound();
+
+            switchTurns();
         } 
         
+        // Player did not guess the word
         else if(tries === 1){
-            console.log("You ran out of guesses!");
-            // score.innerHTML = `Score: ${mySign.score}`;
-            turn = (turn === 'H') ? 'G' : 'H';
-            nextRound();
+            switchTurns();
         }
 
         else{
             tries--;
+
             if(turn !== mySign.sign){
                 triesLeft.innerHTML = `Tries Left: ${tries}`;
             }
@@ -463,24 +388,21 @@
         if (e.keyCode === 13  && !e.shiftKey) e.preventDefault();
 
         let focused = guessWordInput.matches(':focus');
-
         if (focused && e.keyCode === 13 && guessWordInput.value.length > 0) {
             if(turn === mySign.sign){
-                window.alert("It's your turn to draw. Only other player can guess the word.");
+                window.alert('It is your turn to draw. Only other player can guess the word.');
                 return;
             }
-            var text = guessWordInput.value;
+            let text = guessWordInput.value;
             GuessWordChatEngine.global.emit('message', {
                 text: text,
-                uuid: name
+                uuid: player
             });
 
             guessWordInput.value = '';          
         }
     }
 
-    // Add event listener for the textarea of the chat UI
     guessWordInput.addEventListener('keypress', sendMessageGuessWord);
 
 })();
-
