@@ -9,7 +9,11 @@ PubNub offers realtime infrastructure that enables users to connect their device
 ## Quick Start
 
 1) First things first, sign up for a free PubNub [account](https://dashboard.pubnub.com/signup). Once you do so, go to your developer portal to get your Publish/Subscribe keys. You can get the keys from the Demo Project App, or you can create a new app for this project and get the keys from that app. 
+<<<<<<< HEAD
     - Enable channel presence in your account [dashboard](https://admin.pubnub.com/#/user/) for the app you are using. Presence allows for detection of users in the channel. In this case, game starts when there are two player's in the channel and game ends if a player leaves before the game is over.
+=======
+    - Enable channel presence in your account [dashboard](https://admin.pubnub.com/#/user/) for the app you are using. Presence allows for detection of users in the channel. In this case, the game starts when there are two player's in the channel and the game ends if a player leaves before the game is over.
+>>>>>>> b231a9b7df48b5d5de2aefb068819e1407b75e6c
 
 2) To set up ChatEngine, you will need to use different Publish/Subscribe keys from the keys used for the game. You can get your free pre-configured keys [here](https://www.pubnub.com/tutorials/chatengine/). Since the game uses two separate chat boxes (one for messaging and the other for guessing the word), you will need to reload the page(or [click here](https://www.pubnub.com/tutorials/chatengine/)) to get different keys for the ChatEngine.
 
@@ -41,6 +45,12 @@ git clone https://github.com/ocastroa/GuessWordPubNub.git
 - Game is kept simple, as the purpose of this game is to demonstrate how PubNub's API is implemented in a multiplayer game. The possibilities for this game are endless. You can allow for more player's in a lobby, let player's choose a category to draw (like animals), increase the winning score from 3, add more colors to choose from, add a time limit for drawing the word, etc.
 
 ### Acknowledgements
+<<<<<<< HEAD
 - Inspiration for the game, and some pieces of code, was taken from PubNubs opensource project: [codoodler](https://github.com/pubnub/codoodler)- a multi-user doodling web app. 
 - Other sources used: [Building Your First Multiplayer Game](https://www.pubnub.com/tutorials/javascript/multiplayer-game/), [Adding In-game Chat to a Multiplayer Game with ChatEngine](https://www.pubnub.com/blog/in-game-multiplayer-chat-with-chatengine/)
  
+=======
+- Inspiration for the game, and some pieces of code, was used from PubNubs opensource project: [codoodler](https://github.com/pubnub/codoodler)- a multi-user doodling web app. 
+- Other sources used: [Building Your First Multiplayer Game](https://www.pubnub.com/tutorials/javascript/multiplayer-game/), [Adding In-game Chat to a Multiplayer Game with ChatEngine](https://www.pubnub.com/blog/in-game-multiplayer-chat-with-chatengine/)
+ 
+>>>>>>> b231a9b7df48b5d5de2aefb068819e1407b75e6c
