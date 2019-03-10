@@ -1,4 +1,5 @@
-function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, lobby, game, player){
+function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, player){
+    // Random word will be choosen from the array for player to draw
     const words = ['bear', 'cat', 'dog', 'car', 'house', 'pickle', 'glasses', 'tiger', 'panda', 'glue', 'bunny', 'skull', 'flower', 'bee', 'elmo', 'kermit', 'goldfish', 'heart', 'lion', 'butterfly', 'pumpkin', 'snowman', 'guitar', 'owl', 'batman', 'dragon', 'pigeon', 'starfish', 'cupcake'];
     
     let choosenWord = '';
@@ -281,6 +282,7 @@ function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, lobby, game
         }
 
         else{
+            // Decrement number of tries left
             tries--;
             if(turn !== player.sign){
                 triesLeft.innerHTML = `Tries Left: ${tries}`;
