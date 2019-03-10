@@ -41,6 +41,6 @@ git clone https://github.com/ocastroa/GuessWordPubNub.git
 - Game is kept simple, as the purpose of this game is to demonstrate how PubNub's API is implemented in a multiplayer game. The possibilities for this game are endless. You can allow for more player's in a lobby, let player's choose a category to draw (like animals), increase the winning score from 3, add more colors to choose from, add a time limit for drawing the word, etc.
 
 ### Acknowledgements
-- Inspiration for the game, and some pieces of code, was taken from PubNubs opensource project: [codoodler](https://github.com/pubnub/codoodler)- a multi-user doodling web app. 
+- Inspiration for the game, and some pieces of code, was used from PubNubs opensource project: [codoodler](https://github.com/pubnub/codoodler)- a multi-user doodling web app. 
 - Other sources used: [Building Your First Multiplayer Game](https://www.pubnub.com/tutorials/javascript/multiplayer-game/), [Adding In-game Chat to a Multiplayer Game with ChatEngine](https://www.pubnub.com/blog/in-game-multiplayer-chat-with-chatengine/)
  
