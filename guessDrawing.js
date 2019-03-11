@@ -164,7 +164,7 @@ function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, playe
    // Draw on other player's canvas
     function drawFromStream(m) {
         if(!m || m.plots.length < 1) return;
-		drawOnCanvas(m.color, m.plots);
+	drawOnCanvas(m.color, m.plots);
     }
 
     function drawOnCanvas(color, plots) {
