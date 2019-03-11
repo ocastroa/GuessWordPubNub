@@ -23,8 +23,8 @@
 
     const pubnubGuessGame = new PubNub({
         uuid: newUUID,
-        publish_key: 'pub-c-0eaf7fdd-cf5d-42f6-bee8-de40fe3b83a8',
-        subscribe_key: 'sub-c-3084ee5c-3a30-11e9-82f9-d2a672cc1cb7',
+        publish_key: 'game_pub_key',
+        subscribe_key: 'game_sub_key',
         ssl: true
     });
 
@@ -91,18 +91,20 @@
     });
 
     function connectToChat(){
-        //Main Chat
+        /* Main Chat
+           Different keys from game keys */
         ChatEngine = ChatEngineCore.create({
-            publishKey: 'pub-c-e7a955d5-a869-4d78-b25a-d5f9d72aad6a',
-            subscribeKey: 'sub-c-be7320d0-3be8-11e9-82f9-d2a672cc1cb7'
+            publishKey: 'main_chat_pub_key',
+            subscribeKey: 'main_chat_sub_key'
         }, {
             globalChannel: [game]
         });
 
-        //Guess Word Chat
+        /* Guess Word Chat
+           Different keys from above */
         GuessWordChatEngine = ChatEngineCore.create({
-            publishKey: 'pub-c-72fbd257-fe52-43c3-a861-435c484e9f9e',
-            subscribeKey: 'sub-c-f1cdfc38-3bf8-11e9-b86f-06e8d5f9a4fd'
+            publishKey: 'guess_word_chat_pub_key',
+            subscribeKey: 'guess_word_chat_sub_key'
         }, {
             globalChannel: [game]
         });
