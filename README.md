@@ -17,7 +17,13 @@ PubNub offers realtime infrastructure that enables users to connect their device
 ```bash
 git clone https://github.com/ocastroa/GuessWordPubNub.git
 ```
-4) Open the files in your favorite text editor, such as [VS Code](https://code.visualstudio.com/download) or [Notepad++](https://notepad-plus-plus.org/download/v7.6.4.html) (I personally used VS Code with the Live Server Extension). Run the index.html and enter a lobby name. Copy and paste the url to another tab, or preferably a new window, enter the same lobby name, and the game will start!
+4) Open the files in your favorite text editor, such as [VS Code](https://code.visualstudio.com/download) or [Notepad++](https://notepad-plus-plus.org/download/v7.6.4.html) (I personally used VS Code with the Live Server Extension). 
+
+5) Open lobby.js and replace 'game_pub_key' and 'game_sub_key' with the keys you got from Step 1. 
+
+6) In the same file, replace 'main_chat_pub_key' and 'main_chat_sub_key' with the first set of keys you got from Step 2. Then replace 'guess_word_chat_pub_key' and 'guess_word_chat_sub_key' with the second set of keys you also got from Step 2.
+
+7) Run the index.html and enter a lobby name. Copy and paste the url to another tab, or preferably a new window, enter the same lobby name, and the game will start!
 
 ## How to Play
 
