@@ -63,8 +63,8 @@ function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, playe
 
     function publish(data) {
 	pubnubGuessGame.publish({
-		channel: game,
-		message: data
+	     channel: game,
+	     message: data
 	});
      }
 
