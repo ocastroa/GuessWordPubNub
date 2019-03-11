@@ -1,6 +1,6 @@
 function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, player){
     // Random word will be choosen from the array for player to draw
-    const words = ['bear', 'cat', 'dog', 'car', 'house', 'pickle', 'glasses', 'tiger', 'panda', 'glue', 'bunny', 'skull', 'flower', 'bee', 'elmo', 'kermit', 'goldfish', 'heart', 'lion', 'butterfly', 'pumpkin', 'snowman', 'guitar', 'owl', 'batman', 'dragon', 'pigeon', 'starfish', 'cupcake'];
+    const words = ['bear', 'cat', 'dog', 'car', 'house', 'pickle', 'glasses', 'tiger', 'panda', 'glue', 'bunny', 'skull', 'flower',                        'bee', 'elmo', 'kermit', 'goldfish', 'heart', 'lion', 'butterfly', 'pumpkin', 'snowman', 'guitar', 'owl', 'batman',                      'dragon', 'pigeon', 'starfish', 'cupcake'];
     
     let choosenWord = '';
     let totalScore = 0;
@@ -12,7 +12,7 @@ function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, playe
         return document.getElementById(id); 
     }   
 
-    let chatLog =  $('chatLog'), chatInput = $('chatInput'), guessWordChatLog =  $('guessWordChatLog'), guessWordInput = $('guessWordChatInput'), clearCanvasButton = $('clearCanvasButton'), score = $('score'),        colorSwatch = $('colorSwatch'), triesLeft = $('triesLeft'), guessWord = $('guessWord'),                opponentScore = $('opponentScore');
+    let chatLog =  $('chatLog'), chatInput = $('chatInput'), guessWordChatLog =  $('guessWordChatLog'), guessWordInput =          	     $('guessWordChatInput'), clearCanvasButton = $('clearCanvasButton'), score = $('score'), colorSwatch = $('colorSwatch'),                 triesLeft = $('triesLeft'), guessWord = $('guessWord'), opponentScore = $('opponentScore');
 
     ChatEngine.on('$.ready', function(data) {
         // Every time a message is recieved from PubNub, render it.
@@ -56,16 +56,16 @@ function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, playe
     pubnubGuessGame.addListener(gameListener);
 
     pubnubGuessGame.subscribe({
-		channels: [game],
+	channels: [game],
         withPresence: true
     });
 
 
     function publish(data) {
-		pubnubGuessGame.publish({
-			channel: game,
-			message: data
-		});
+	pubnubGuessGame.publish({
+		channel: game,
+		message: data
+	});
      }
 
     function unsubscribeFromGame(){
@@ -91,9 +91,9 @@ function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, playe
     let isPointerSupported = navigator.pointerEnabled;
     let isMSPointerSupported =  navigator.msPointerEnabled;
     
-    let downEvent = isTouchSupported ? 'touchstart' : (isPointerSupported ? 'pointerdown' : (isMSPointerSupported ? 'MSPointerDown' : 'mousedown'));
-    let moveEvent = isTouchSupported ? 'touchmove' : (isPointerSupported ? 'pointermove' : (isMSPointerSupported ? 'MSPointerMove' : 'mousemove'));
-    let upEvent = isTouchSupported ? 'touchend' : (isPointerSupported ? 'pointerup' : (isMSPointerSupported ? 'MSPointerUp' : 'mouseup'));
+    let downEvent = isTouchSupported ? 'touchstart' : (isPointerSupported ? 'pointerdown' : (isMSPointerSupported ? 'MSPointerDown' :       'mousedown'));
+    let moveEvent = isTouchSupported ? 'touchmove' : (isPointerSupported ? 'pointermove' : (isMSPointerSupported ? 'MSPointerMove' :         'mousemove'));
+    let upEvent = isTouchSupported ? 'touchend' : (isPointerSupported ? 'pointerup' : (isMSPointerSupported ? 'MSPointerUp' :        	     'mouseup'));
     
     function clearCanvas(){
         ctx.fillStyle = 'WHITE';
@@ -137,7 +137,7 @@ function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, playe
         // Player guessing word cannot draw on canvas
         if(turn !== player.sign){
             return;
-        }
+    	}
 
         // Choose a random word from array, then remove that word
         let chooseIndex = Math.floor(Math.random() * words.length);
@@ -169,36 +169,36 @@ function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, playe
 
     function drawOnCanvas(color, plots) {
     	ctx.strokeStyle = color;
-		ctx.beginPath();
-		ctx.moveTo(plots[0].x, plots[0].y);
+	ctx.beginPath();
+	ctx.moveTo(plots[0].x, plots[0].y);
 
     	for(let i=1; i<plots.length; i++) {
 	    	ctx.lineTo(plots[i].x, plots[i].y);
 	    }
-	    ctx.stroke();
+	ctx.stroke();
     }
 
-	function draw(e) {
-        // prevent continuous touch event process e.g. scrolling!
-		e.preventDefault(); 
-	  	if(!isActive) return;
+    function draw(e) {
+      // prevent continuous touch event process e.g. scrolling!
+	e.preventDefault(); 
+	if(!isActive) return;
 
-    	let x = isTouchSupported ? (e.targetTouches[0].pageX - canvas.offsetLeft) : (e.offsetX || e.layerX - canvas.offsetLeft);
-    	let y = isTouchSupported ? (e.targetTouches[0].pageY - canvas.offsetTop) : (e.offsetY || e.layerY - canvas.offsetTop);
+	let x = isTouchSupported ? (e.targetTouches[0].pageX - canvas.offsetLeft) : (e.offsetX || e.layerX - canvas.offsetLeft);
+	let y = isTouchSupported ? (e.targetTouches[0].pageY - canvas.offsetTop) : (e.offsetY || e.layerY - canvas.offsetTop);
 
-        // round numbers for touch screens
-    	plots.push({x: (x << 0), y: (y << 0)}); 
+	// round numbers for touch screens
+	plots.push({x: (x << 0), y: (y << 0)}); 
 
-    	drawOnCanvas(color, plots);
-	}
+	drawOnCanvas(color, plots);
+    }
 	
-	function startDraw(e) {
+    function startDraw(e) {
         e.preventDefault();
-	  	isActive = true;
-	}
+	isActive = true;
+    }
 	
-	function endDraw(e) {
-	  	e.preventDefault();
+    function endDraw(e) {
+	e.preventDefault();
         isActive = false;
           
         publish({
@@ -207,7 +207,7 @@ function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, playe
         })
 
         plots = [];
-    }
+     }
 
     function clearButton(e){
         e.preventDefault();
@@ -216,7 +216,6 @@ function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, playe
             clearTheCanvas: clearTheCanvas
         })
     }
-
 
     //ChatEngine for the main chat
     function onMessage(message) {
