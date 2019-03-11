@@ -13,7 +13,7 @@ PubNub offers realtime infrastructure that enables users to connect their device
 
 2) To set up ChatEngine, you will need to use different Publish/Subscribe keys from the keys used for the game. You can get your free pre-configured keys [here](https://www.pubnub.com/tutorials/chatengine/). Since the game uses two separate chat boxes (one for messaging and the other for guessing the word), you will need to reload the page(or [click here](https://www.pubnub.com/tutorials/chatengine/)) to get different keys for the ChatEngine.
 
-3) Clone the Repo
+3) Clone the repo.
 ```bash
 git clone https://github.com/ocastroa/GuessWordPubNub.git
 ```
@@ -33,8 +33,8 @@ git clone https://github.com/ocastroa/GuessWordPubNub.git
 
 5) Once a word is guessed or tries equals to 0, roles are switched and the guest has to draw a new word while the host has to guess the drawing.
 
-6) Roles keep switching until a player reaches a score of 3. That player is announced the winner and game ends
-    - If a player leaves before the game ends, the other player is announced the winner
+6) Roles keep switching until a player reaches a score of 3. That player is announced the winner and game ends.
+    - If a player leaves before the game ends, the other player is announced the winner.
 
 ### Notes
 
