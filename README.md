@@ -2,7 +2,7 @@
 
 A drawing and guessing multiplayer game where one player draws a word and the other player guesses the word based on the drawing. Player is awarded a point for guessing the correct word. The player with the most points wins!
 
-<img alt="Guess the Drawing" align="center" src="https://imgur.com/a/inZI9sB" height="150">
+<img alt="Guess the Drawing" align="center" src="https://www.dropbox.com/s/apb4slq071he06x/project_pic.png?dl=0" height="150">
 
 ## Background Info
 
