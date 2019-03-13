@@ -2,6 +2,8 @@
 
 A drawing and guessing multiplayer game where one player draws a word and the other player guesses the word based on the drawing. Player is awarded a point for guessing the correct word. The player with the most points wins!
 
+<img alt="Guess the Drawing" align="center" src="https://imgur.com/a/inZI9sB" height="150">
+
 ## Background Info
 
 PubNub offers realtime infrastructure that enables users to connect their devices and deliver data using PubNub's global data streaming network. There are endless applications that can be done using PubNub's API, such as chat apps, ridshare apps, retail apps, multiplayer games, etc. In the case of multiplayer games, PubNub faciliates real-time interaction among player's and powers the gaming functionality and social features that creates a smooth gaming exerience. For this game, PubNub was used to connect two users to a lobby where they can interact and chat in real-time. The game consists of a canvas for drawing and two chat boxes, one for writing the guessed word and the other for messaging the other player. This game was built using PubNub's [JavaScript V4 SDK](https://www.pubnub.com/docs/web-javascript/pubnub-javascript-sdk) and [ChatEngine JavaScript SDK](https://www.pubnub.com/docs/chat-engine/getting-started). 
