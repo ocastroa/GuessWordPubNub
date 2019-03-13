@@ -4,7 +4,7 @@ A drawing and guessing multiplayer game where one player draws a word and the ot
 
 ## Background Info
 
-PubNub offers realtime infrastructure that enables users to connect their devices and deliver data using PubNub's global data streaming network. There are endless applications that can be done using PubNub's API, such as chat apps, ridshare apps, retail apps, multiplayer games, etc. In the case of multiplayer games, PubNub faciliates real-time interaction among player's and powers the gaming functionality and social features that creates a smooth gaming exerience. In the case of this game, PubNub was used to connect two users to a lobby where they can interact and chat in real-time. The game consists of a canvas for drawing and two chat boxes, one for writing the guessed word and the other for messaging the other player. This game was built using PubNub's [JavaScript V4 SDK](https://www.pubnub.com/docs/web-javascript/pubnub-javascript-sdk) and [ChatEngine JavaScript SDK](https://www.pubnub.com/docs/chat-engine/getting-started). 
+PubNub offers realtime infrastructure that enables users to connect their devices and deliver data using PubNub's global data streaming network. There are endless applications that can be done using PubNub's API, such as chat apps, ridshare apps, retail apps, multiplayer games, etc. In the case of multiplayer games, PubNub faciliates real-time interaction among player's and powers the gaming functionality and social features that creates a smooth gaming exerience. For this game, PubNub was used to connect two users to a lobby where they can interact and chat in real-time. The game consists of a canvas for drawing and two chat boxes, one for writing the guessed word and the other for messaging the other player. This game was built using PubNub's [JavaScript V4 SDK](https://www.pubnub.com/docs/web-javascript/pubnub-javascript-sdk) and [ChatEngine JavaScript SDK](https://www.pubnub.com/docs/chat-engine/getting-started). 
 
 ## Quick Start
 
@@ -24,7 +24,7 @@ git clone https://github.com/ocastroa/GuessWordPubNub.git
 
 6) In the same file, replace 'main_chat_pub_key' and 'main_chat_sub_key' with the first set of keys you got from Step 2. Then replace 'guess_word_chat_pub_key' and 'guess_word_chat_sub_key' with the second set of keys you also got from Step 2.
 
-7) Run the index.html and enter a lobby name. Copy and paste the url to another tab, or preferably a new window, enter the same lobby name, and the game will start!
+7) Run index.html and enter a lobby name. Copy and paste the url to another tab, or preferably a new window, enter the same lobby name, and the game will start!
 
 ## How to Play
 
