@@ -2,7 +2,7 @@
 
 A drawing and guessing multiplayer game where one player draws a word and the other player guesses the word based on the drawing. Player is awarded a point for guessing the correct word. The player with the most points wins!
 
-[[https://github.com/ocastroa/GuessWordPubNub/master/img/GuessWord.png|at=GuessWord]]
+![GuessDrawing](project_pic.png)
 
 ## Background Info
 
