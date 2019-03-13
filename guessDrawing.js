@@ -1,6 +1,8 @@
 function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, player){
     // Random word will be choosen from the array for player to draw
-    const words = ['bear', 'cat', 'dog', 'car', 'house', 'pickle', 'glasses', 'tiger', 'panda', 'glue', 'bunny', 'skull', 'flower',                        'bee', 'elmo', 'kermit', 'goldfish', 'heart', 'lion', 'butterfly', 'pumpkin', 'snowman', 'guitar', 'owl', 'batman',                      'dragon', 'pigeon', 'starfish', 'cupcake'];
+    const words = ['bear', 'cat', 'dog', 'car', 'house', 'pickle', 'glasses', 'tiger', 'panda', 'glue', 'bunny', 'skull', 'flower',
+		   'bee', 'elmo', 'kermit', 'goldfish', 'heart', 'lion', 'butterfly', 'pumpkin', 'snowman', 'guitar', 'owl', 'batman',
+		   'dragon', 'pigeon', 'starfish', 'cupcake'];
     
     let choosenWord = '';
     let totalScore = 0;
@@ -12,7 +14,9 @@ function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, playe
         return document.getElementById(id); 
     }   
 
-    let chatLog =  $('chatLog'), chatInput = $('chatInput'), guessWordChatLog =  $('guessWordChatLog'), guessWordInput =          	     $('guessWordChatInput'), clearCanvasButton = $('clearCanvasButton'), score = $('score'), colorSwatch = $('colorSwatch'),                 triesLeft = $('triesLeft'), guessWord = $('guessWord'), opponentScore = $('opponentScore');
+    let chatLog =  $('chatLog'), chatInput = $('chatInput'), guessWordChatLog =  $('guessWordChatLog'), guessWordInput = $('guessWordChatInput'), 
+    clearCanvasButton = $('clearCanvasButton'), score = $('score'), colorSwatch = $('colorSwatch'), triesLeft = $('triesLeft'), 
+    guessWord = $('guessWord'), opponentScore = $('opponentScore');
 
     ChatEngine.on('$.ready', function(data) {
         // Every time a message is recieved from PubNub, render it.
