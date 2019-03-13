@@ -72,7 +72,7 @@
                     pubnubGuessGame.unsubscribe({
                         channels: [lobby]
                     });       
-                    gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, lobby, game, player);               
+                    gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, player);               
                 }
             }
         }, 
