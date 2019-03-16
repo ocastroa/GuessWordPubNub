@@ -1,10 +1,10 @@
 function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, player){
-    // Random word will be choosen from the array for player to draw
+    // Random word will be chosen from the array for player to draw
     const words = ['bear', 'cat', 'dog', 'car', 'house', 'pickle', 'glasses', 'tiger', 'panda', 'glue', 'bunny', 'skull', 'flower',
 		   'bee', 'elmo', 'kermit', 'goldfish', 'heart', 'lion', 'butterfly', 'pumpkin', 'snowman', 'guitar', 'owl', 'batman',
 		   'dragon', 'pigeon', 'starfish', 'cupcake'];
     
-    let choosenWord = '';
+    let chosenWord = '';
     let totalScore = 0;
     let turn =  'H';
     let tries = 3; // Each player gets 3 tries to guess the word
@@ -30,8 +30,8 @@ function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, playe
     gameListener = {
         message: function(msg) {
             if(msg){
-                if(turn !== player.sign && msg.message.choosenWord){
-                    choosenWord = msg.message.choosenWord;
+                if(turn !== player.sign && msg.message.chosenWord){
+                    chosenWord = msg.message.chosenWord;
                 }
 
                 //only draw on other player's canvas
@@ -119,7 +119,7 @@ function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, playe
         guessWordChatLog.innerHTML = '';
         tries = 3;
 
-        // Other player's turn to draw a word
+        // Other players turn to guess the drawing
         if(turn !== player.sign) {
             guessWord.innerHTML = `Guess the drawing!`;
             triesLeft.innerHTML = `Tries Left: ${tries}`;
@@ -130,7 +130,6 @@ function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, playe
         }
 
         else{
-            // Player drawing does not guess word
             guessWord.innerHTML = '';
             triesLeft.innerHTML = '';
             startGame();            
@@ -145,13 +144,13 @@ function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, playe
 
         // Choose a random word from array, then remove that word
         let chooseIndex = Math.floor(Math.random() * words.length);
-        choosenWord = words[chooseIndex];
+        chosenWord = words[chooseIndex];
         words.splice(chooseIndex,1);
         // only show word to player whose turn it is to draw
-        guessWord.innerHTML = `Draw the word: ${choosenWord}`;
+        guessWord.innerHTML = `Draw the word: ${chosenWord}`;
 
         publish({
-            choosenWord: choosenWord
+            chosenWord: chosenWord
         })            
         
         colorSwatch.addEventListener('click', function() {
@@ -264,7 +263,7 @@ function gameStart(pubnubGuessGame, ChatEngine, GuessWordChatEngine, game, playe
         guessWordChatLog.scrollTo(0, guessWordChatLog.scrollHeight);
 
         // Check if word was guessed
-        if(tries > 0 && text === choosenWord){
+        if(tries > 0 && text === chosenWord){
             // Give a point to player that guessed the word
             if(turn !== player.sign){
                 player.score += 1;
