@@ -6,7 +6,7 @@ A drawing and guessing multiplayer game where one player draws a word and the ot
 
 ## Background Info
 
-PubNub offers realtime infrastructure that enables users to connect their devices and deliver data using PubNub's global data streaming network. There are endless applications that can be done using PubNub's API, such as chat apps, ridshare apps, retail apps, multiplayer games, etc. In the case of multiplayer games, PubNub faciliates real-time interaction among player's and powers the gaming functionality and social features that creates a smooth gaming exerience. For this game, PubNub was used to connect two users to a lobby where they can interact and chat in real-time. The game consists of a canvas for drawing and two chat boxes, one for writing the guessed word and the other for messaging the other player. This game was built using PubNub's [JavaScript V4 SDK](https://www.pubnub.com/docs/web-javascript/pubnub-javascript-sdk) and [ChatEngine JavaScript SDK](https://www.pubnub.com/docs/chat-engine/getting-started). 
+PubNub offers realtime infrastructure that enables users to connect their devices and deliver data using PubNub's global data streaming network. There are endless applications that can be done using PubNub's API, such as chat apps, ridshare apps, retail apps, multiplayer games, etc. In the case of multiplayer games, PubNub faciliates real-time interaction among players and powers the gaming functionality and social features that creates a smooth gaming exerience. For this game, PubNub was used to connect two users to a lobby where they can interact and chat in real-time. The game consists of a canvas for drawing and two chat boxes, one for writing the guessed word and the other for messaging the other player. This game was built using PubNub's [JavaScript V4 SDK](https://www.pubnub.com/docs/web-javascript/pubnub-javascript-sdk) and [ChatEngine JavaScript SDK](https://www.pubnub.com/docs/chat-engine/getting-started). If you want to build this game from scratch, check out this [blog tutorial](https://medium.com/@ocastroa/how-to-build-a-realtime-multiplayer-game-in-javascript-using-pubnub-5f410fd62f33). 
 
 ## Quick Start
 
@@ -32,7 +32,7 @@ git clone https://github.com/ocastroa/GuessWordPubNub.git
 
 1) First player in the lobby is the host. Second player that joins that same lobby is the guest.
 
-2) Game starts when there are two player's in a lobby.
+2) Game starts when there are two players in a lobby.
 
 3) The host is given a word and needs to draw it on the canvas.
 
@@ -47,7 +47,7 @@ git clone https://github.com/ocastroa/GuessWordPubNub.git
 
 ### Notes
 
-- Game is kept simple, as the purpose of this game is to demonstrate how PubNub's API is implemented in a multiplayer game. The possibilities for this game are endless. You can allow for more player's in a lobby, let player's choose a category to draw (like animals), increase the winning score from 3, add more colors to choose from, add a time limit for drawing the word, etc.
+- Game is kept simple, as the purpose of this game is to demonstrate how PubNub's API is implemented in a multiplayer game. The possibilities for this game are endless. You can allow for more players in a lobby, let players choose a category to draw (like animals), increase the winning score from 3, add more colors to choose from, add a time limit for drawing the word, etc.
 
 ### Acknowledgements
 
